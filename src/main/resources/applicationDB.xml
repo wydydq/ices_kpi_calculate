@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+
+	
+	<!-- 加载资源文件 -->
+	<beans:bean id="propertyConfigurer"
+		class="com.nsn.ices.common.annotation.ExtendedPropertyPlaceholderConfigurer">
+		<beans:property name="locations">
+			<beans:list>
+				<beans:value>classpath:appconfig.properties</beans:value>
+				<beans:value>classpath:system.properties</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="fileEncoding" value="utf-8"></beans:property>
+	</beans:bean>
+
+    <!-- <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    	<beans:property name="driverClassName">
+             <beans:value>${driverClassName}</beans:value>
+         </beans:property>
+	    <beans:property name="url">
+             <beans:value>${url}</beans:value>
+         </beans:property>
+         <beans:property name="username">
+             <beans:value>${username}</beans:value>
+         </beans:property>
+         <beans:property name="password">
+             <beans:value>${password}</beans:value>
+         </beans:property>
+	</beans:bean> -->
+	
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+    		destroy-method="close">
+    	<beans:property name="driverClassName">
+             <beans:value>${driverClassName}</beans:value>
+         </beans:property>
+	    <beans:property name="url">
+             <beans:value>${url}</beans:value>
+         </beans:property>
+         <beans:property name="username">
+             <beans:value>${username}</beans:value>
+         </beans:property>
+         <beans:property name="password">
+             <beans:value>${password}</beans:value>
+         </beans:property>
+         <beans:property name="initialSize">
+             <beans:value>${initialSize}</beans:value>
+         </beans:property>
+         <beans:property name="maxActive">
+             <beans:value>${maxActive}</beans:value>
+         </beans:property>
+         <beans:property name="maxIdle">
+             <beans:value>${maxIdle}</beans:value>
+         </beans:property>
+         <beans:property name="minIdle">
+             <beans:value>${minIdle}</beans:value>
+         </beans:property>
+         <beans:property name="validationQuery">
+             <beans:value>SELECT CURRENT_DATE</beans:value>
+         </beans:property>
+         <beans:property name="testWhileIdle">
+             <beans:value>true</beans:value>
+         </beans:property>
+         <beans:property name="timeBetweenEvictionRunsMillis">
+             <beans:value>3600000</beans:value>
+         </beans:property>
+         <beans:property name="minEvictableIdleTimeMillis">
+             <beans:value>18000000</beans:value>
+         </beans:property>
+         <beans:property name="testOnBorrow">
+             <beans:value>true</beans:value>
+         </beans:property>
+	</beans:bean>
+
+	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	   <beans:property name="packagesToScan">  
+        <beans:list>  
+            <beans:value>com.nsn.ices.model.entity</beans:value>  
+        </beans:list>  
+	   </beans:property> 
+		
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">
+					${hibernate.dialect}
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+				<beans:prop key="hibernate.jdbc.fetch_size">25</beans:prop>
+				<beans:prop key="hibernate.jdbc.batch_size">50</beans:prop>
+				<beans:prop key="hibernate.bytecode.use_reflection_optimizer">
+					true
+				</beans:prop>
+				<beans:prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</beans:prop>
+                <beans:prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</beans:prop>
+				<beans:prop key="hibernate.cache.use_second_level_cache">
+					false
+				</beans:prop>
+				<beans:prop key="hibernate.cache.use_query_cache">false</beans:prop>
+				<beans:prop key="hibernate.hbm2ddl.auto">
+					${hibernate.hbm2ddl.auto}
+				</beans:prop>
+				<beans:prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</beans:prop>
+				<beans:prop key="jdbc.use_scrollable_resultset">false</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	<!--
+		这里事务管理器的名字为txManager 故可以在配置事物中不需要指定名称 Transaction manager for
+		a single Hibernate SessionFactory (alternative to JTA)
+	-->
+	<beans:bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="sessionFactory" />
+	</beans:bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+	   	<tx:attributes>
+	      	<tx:method name="get*" read-only="true" propagation="REQUIRED"/><!--之前是NOT_SUPPORT-->
+	      	<tx:method name="find*" read-only="true" propagation="REQUIRED"/><!--之前是NOT_SUPPORT-->
+	      	<tx:method name="save*" propagation="REQUIRED"/>
+	      	<tx:method name="update*" propagation="REQUIRED"/>
+	      	<tx:method name="remove*" propagation="REQUIRED"/>
+	      	<tx:method name="delete*" propagation="REQUIRED"/>
+	      	<tx:method name="add*" propagation="REQUIRED"/>
+	      	<!--默认其他方法都是REQUIRED-->
+	      	<tx:method name="*"/>
+	   	</tx:attributes>
+	</tx:advice>
+	<aop:config proxy-target-class="true"> 
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.nsn..service..*.*(..))" /> 
+	</aop:config>
+	
+	<!-- JavaBean that allows for configuring a java.util.concurrent.ThreadPoolExecutor in bean style (through its 
+ "corePoolSize", "maxPoolSize", "keepAliveSeconds", "queueCapacity" properties) and exposing it as a Spring 
+ org.springframework.core.task.TaskExecutor. This class is also well suited for management and monitoring (e.g. 
+ through JMX), providing several useful attributes: "corePoolSize", "maxPoolSize", "keepAliveSeconds" (all 
+ supporting updates at runtime); "poolSize", "activeCount" (for introspection only). 
+For an alternative, you may set up a ThreadPoolExecutor instance directly using constructor injection, or use a 
+ factory method definition that points to the java.util.concurrent.Executors class. To expose such a raw Executor 
+ as a Spring org.springframework.core.task.TaskExecutor, simply wrap it with a 
+ org.springframework.scheduling.concurrent.ConcurrentTaskExecutor adapter. 
+NOTE: This class implements Spring's org.springframework.core.task.TaskExecutor interface as well as the 
+ java.util.concurrent.Executor interface, with the former being the primary interface, the other just serving as 
+ secondary convenience. For this reason, the exception handling follows the TaskExecutor contract rather than the 
+ Executor contract, in particular regarding the org.springframework.core.task.TaskRejectedException. 
+If you prefer native java.util.concurrent.ExecutorService exposure instead, consider 
+ ThreadPoolExecutorFactoryBean as an alternative to this class. -->
+	
+    <beans:bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<beans:property name="corePoolSize" value="${corePoolSize}" /> <!-- 并发线程数,想达到真正的并发效果,最好对应CPU的线程数及核心数 -->
+		<beans:property name="maxPoolSize" value="${maxPoolSize}" /> <!-- 最大线程池容量 -->
+		<beans:property name="queueCapacity" value="${queueCapacity}" /> <!-- 超过最大线程池容量后,允许的线程队列数 -->
+		<beans:property name="keepAliveSeconds" value="${keepAliveSeconds}"></beans:property>
+	</beans:bean>
+	<!-- <beans:bean class="org.springframework.scheduling.concurrent.ConcurrentTaskExecutor"></beans:bean> -->
+	<beans:import resource="applicationDB_OMC1.xml"/>
+	<beans:import resource="applicationDB_OMC2.xml"/>
+
+ </beans:beans>
