@@ -5,7 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.nsn.ices.model.dao.BtsStateDao;
@@ -38,7 +37,6 @@ public class BtsStateServiceImpl implements BtsStateService {
 		return btsStateDao.search(btsStateId);
 	}
 
-	@Cacheable("btsStateCache")
 	@Transactional
 	public List<BtsState> getAllBtsState() {
 		return btsStateDao.getAllBtsState();

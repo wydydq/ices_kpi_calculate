@@ -5,7 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.nsn.ices.model.dao.CellDao;
@@ -43,7 +42,6 @@ public class CellServiceImpl implements CellService {
 		return cellDao.getAllCell();
 	}
 	
-	@Cacheable("cellCache")
 	@Transactional
 	public List<Cell> getAllActiveCell() {
 		return cellDao.getAllActiveCell();

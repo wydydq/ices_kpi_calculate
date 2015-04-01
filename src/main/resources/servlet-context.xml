@@ -23,7 +23,7 @@
 	<beans:bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 	    <beans:property name="caches">
 	        <beans:set>
-	            <beans:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+	            <!-- <beans:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
 	                <beans:property name="name" value="kpiCache"/>
 	            </beans:bean>
 	            <beans:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
@@ -34,7 +34,7 @@
 	            </beans:bean>
 	            <beans:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
 	                <beans:property name="name" value="ossCache"/>
-	            </beans:bean>
+	            </beans:bean> -->
 	            <beans:bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
 	                <beans:property name="name" value="omcCell"/>
 	            </beans:bean>

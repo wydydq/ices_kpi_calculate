@@ -19,9 +19,14 @@ public class Kpi{
 	private int has_threshold;//是否有阈值(0:有,1:没有)
 	private String relation;//关系运算符(<,<=,>,>=,==,<>)
 	private double threshold;//阈值
+	private String relation1;//附加阈值分子关系运算符(<,<=,>,>=,==,<>)
+	private double threshold1;//附加阈值分子阈值
+	private String relation2;//附加阈值分母关系运算符(<,<=,>,>=,==,<>)
+	private double threshold2;//附加阈值分母阈值
 	private int continuous_cycle;//最小连续周期数
 	private int is_notice;//是否需要通知(0:需要,1不需要)
 	private int cycle; //周期,单位分钟(默认15)
+	private int type;
 	private String description;
 	
 	public int getId() {
@@ -72,6 +77,30 @@ public class Kpi{
 	public void setThreshold(double threshold) {
 		this.threshold = threshold;
 	}
+	public String getRelation1() {
+		return relation1;
+	}
+	public void setRelation1(String relation1) {
+		this.relation1 = relation1;
+	}
+	public double getThreshold1() {
+		return threshold1;
+	}
+	public void setThreshold1(double threshold1) {
+		this.threshold1 = threshold1;
+	}
+	public String getRelation2() {
+		return relation2;
+	}
+	public void setRelation2(String relation2) {
+		this.relation2 = relation2;
+	}
+	public double getThreshold2() {
+		return threshold2;
+	}
+	public void setThreshold2(double threshold2) {
+		this.threshold2 = threshold2;
+	}
 	public int getContinuous_cycle() {
 		return continuous_cycle;
 	}
@@ -89,6 +118,12 @@ public class Kpi{
 	}
 	public void setCycle(int cycle) {
 		this.cycle = cycle;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
 	}
 	public String getDescription() {
 		return description;

@@ -1,5 +1,6 @@
 package com.nsn.ices.model.entity;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,7 +8,9 @@ import java.util.Set;
 
 import net.sf.json.JSONSerializer;
 
-public class KpiResult {
+public class KpiResult implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private Map<Integer, String> resultMap = new HashMap<Integer, String>();
 	

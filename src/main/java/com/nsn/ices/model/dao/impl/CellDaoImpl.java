@@ -47,7 +47,7 @@ public class CellDaoImpl implements CellDao {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Cell> getAllActiveCell() {
-		return sessionFactory.getCurrentSession().createQuery("from Cell as c where c.ne_code in(select b.ne_code from Bts as b where b.is_active=0) and c.cell_obj_gid is not null ").list();
+		return sessionFactory.getCurrentSession().createQuery("from Cell as c where c.ne_code in(select b.ne_code from Bts as b where b.is_active=0) and c.cell_obj_gid is not null and c.cell_obj_gid!=0 ").list();
 	}
 
 }

@@ -16,13 +16,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.nsn.ices.model.entity.Bts;
+import com.nsn.ices.model.entity.BtsGroupData;
 import com.nsn.ices.model.entity.Cell;
 import com.nsn.ices.model.entity.Kpi;
 import com.nsn.ices.model.entity.KpiResult;
 import com.nsn.ices.model.entity.Oss;
 
 /**
- * A class include spring context initial,which is used to start the project
+ * A class include spring context initialization,which is used to start the project
  * @author Mars Yu
  *
  */
@@ -38,9 +39,20 @@ public class Application {
 	public static Map<Integer, Kpi> kpiMap = new HashMap<Integer, Kpi>();
 	public static Map<String, Kpi> kpiNameMap = new HashMap<String, Kpi>();
 	public static Map<Integer, List<Bts>> ossBtsMap = new HashMap<Integer, List<Bts>>();
+	public static Map<Integer, List<BtsGroupData>> btsGroupDataMap = new HashMap<Integer, List<BtsGroupData>>();
 	public static Map<Integer, Map<Integer, Cell>> ossCellMap = new HashMap<Integer, Map<Integer, Cell>>();
-	public static Map<Integer, KpiResult> kpiResultMap = new HashMap<Integer, KpiResult>();
-	public static int count = 0;
+	public static Map<Integer, KpiResult> kpiResultMap15 = new HashMap<Integer, KpiResult>();
+	public static Map<Integer, KpiResult> kpiResultMap30 = new HashMap<Integer, KpiResult>();
+	public static Map<Integer, KpiResult> kpiResultMap60 = new HashMap<Integer, KpiResult>();
+	public static Map<Integer, KpiResult> kpiResultAreaMap = new HashMap<Integer, KpiResult>();
+	public static Map<Integer, KpiResult> kpiResultGroupMap = new HashMap<Integer, KpiResult>();
+	public static Map<Integer, KpiResult> kpiResultPerDayMap = new HashMap<Integer, KpiResult>();
+	public static Map<String, KpiResult> kpiResultPerDayCityMap = new HashMap<String, KpiResult>();
+	public static int count15 = 0;
+	public static int count30 = 0;
+	public static int count60 = 0;
+	public static int perDayCount = 0;
+	public static int perDayCityCount = 0;
 	private Application(){
 		initSpring();
 		initLog4J();

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.nsn.ices.model.dao.KpiDao;
@@ -38,7 +37,7 @@ public class KpiServiceImpl implements KpiService {
 		return kpiDao.search(kpiId);
 	}
 	
-	@Cacheable("kpiCache")
+//	@Cacheable("kpiCache")
 	@Transactional
 	public List<Kpi> getAllKpi() {
 		return kpiDao.getAllKpi();

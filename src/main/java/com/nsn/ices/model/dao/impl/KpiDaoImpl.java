@@ -38,6 +38,9 @@ public class KpiDaoImpl implements KpiDao {
 		return (Kpi)sessionFactory.getCurrentSession().get(Kpi.class, kpiId);
 	}
 
+	/**
+	 * Note: It's common kpi when id is less than or equal 45,and is group kpi when id is great than 45 
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Kpi> getAllKpi() {
